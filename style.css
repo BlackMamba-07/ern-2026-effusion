@@ -1,5 +1,5 @@
-/* ═══════════════════════════════════════════
-   ERN 2026 – EFFUSION · Custom Styles
+﻿/* ═══════════════════════════════════════════
+   EREN 2026 – EFFUSION · Custom Styles
    Stack: Tailwind CSS + Vanilla JS
 ═══════════════════════════════════════════ */
 
@@ -589,3 +589,4 @@ a:focus-visible, button:focus-visible {
     #particles-canvas, .cursor-dot, .cursor-ring, #loader { display: none !important; }
     body { background: white; color: black; }
 }
+
