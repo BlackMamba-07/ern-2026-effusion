@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ERN 2026 – EFFUSION. L'Esprit Pour le Réveil des Nations. 2ème édition. Du 20 au 25 Mai 2026. Cité de l'Abondance.">
+    <meta name="theme-color" content="#1a0030">
+    <title>ERN 2026 – EFFUSION | L'Esprit Pour le Réveil des Nations</title>
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deep: '#0d0020',
+                        'mid-purple': '#2d0060',
+                        'bright-purple': '#7c3aed',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['"Playfair Display"', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float 10s ease-in-out infinite',
+                        'spin-slow': 'spin 25s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'shimmer': 'shimmer 3s linear infinite',
+                        'pulse-ring': 'pulseRing 2s ease-out infinite',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' },
+                        },
+                        pulseRing: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0.8' },
+                            '100%': { transform: 'scale(2)', opacity: '0' },
+                        },
+                        slideUp: {
+                            from: { opacity: '0', transform: 'translateY(60px)' },
+                            to: { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            from: { opacity: '0' },
+                            to: { opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0d0020] text-white overflow-x-hidden font-sans">
+
+<!-- ═══════════════════════════════════════
+     LOADER
+═══════════════════════════════════════ -->
+<div id="loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0d0020]">
+    <div class="loader-ring mb-6"></div>
+    <div class="text-3xl font-black text-gradient-gold tracking-[0.2em]">ERN 2026</div>
+    <div class="text-sm text-purple-300 mt-2 tracking-[0.5em] uppercase animate-pulse">EFFUSION</div>
+    <div class="loader-bar mt-8"></div>
+</div>
+
+<!-- PARTICLES -->
+<canvas id="particles-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+<!-- CURSOR -->
+<div id="cursor" class="cursor-dot"></div>
+<div id="cursor-ring" class="cursor-ring"></div>
+
+<!-- ═══════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
+    <div class="container mx-auto px-4 flex items-center justify-between max-w-7xl">
+
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-3 group">
+            <!-- Logo ERN circulaire -->
+            <div class="w-11 h-11 flex-shrink-0 transition-all duration-300 group-hover:scale-110" style="filter: drop-shadow(0 0 8px rgba(124,58,237,0.6));">
+                <img src="assets/hero/ern-logo.png" alt="ERN 2026"
+                     class="w-full h-full object-contain"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-full h-full rounded-full bg-purple-900/60 border-2 border-purple-400/60 items-center justify-center">
+                    <span class="text-xs font-black text-orange-400">ERN</span>
+                </div>
+            </div>
+            <div class="leading-none">
+                <div class="text-sm font-black text-white tracking-wider">ERN 2026</div>
+                <div class="text-xs text-orange-400 tracking-[0.3em] uppercase">EFFUSION</div>
+            </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex items-center gap-1">
+            <a href="#about"      class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">À Propos</a>
+            <a href="#speakers"   class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">Orateurs</a>
+            <a href="#programme"  class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">Programme</a>
+            <a href="#dresscode"  class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">Dress Code</a>
+            <a href="#beach"      class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">EREN Beach</a>
+            <a href="#infos"      class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5">Infos</a>
+            <a href="#reservation" class="btn-primary ml-2 px-5 py-2.5 rounded-full text-sm font-bold">Réserver</a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="lg:hidden glass-btn w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl" aria-label="Menu">
+            <span class="menu-bar w-5 h-0.5 bg-white block transition-all duration-300 origin-center"></span>
+            <span class="menu-bar w-5 h-0.5 bg-white block transition-all duration-300"></span>
+            <span class="menu-bar w-5 h-0.5 bg-white block transition-all duration-300 origin-center"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu lg:hidden hidden mx-4 mt-2 glass-card rounded-2xl overflow-hidden">
+        <div class="flex flex-col p-5 gap-1">
+            <a href="#about"      class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all border-b border-white/5">À Propos</a>
+            <a href="#speakers"   class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all border-b border-white/5">Orateurs</a>
+            <a href="#programme"  class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all border-b border-white/5">Programme</a>
+            <a href="#dresscode"  class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all border-b border-white/5">Dress Code</a>
+            <a href="#beach"      class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all border-b border-white/5">EREN Beach</a>
+            <a href="#infos"      class="mobile-nav py-3 px-4 rounded-xl text-white/80 hover:text-orange-400 hover:bg-white/5 transition-all">Infos Pratiques</a>
+            <a href="#reservation" class="btn-primary text-center py-3 rounded-xl font-bold mt-3">Confirmer ma présence</a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex flex-col overflow-hidden">
+
+    <!-- Background officiel -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/hero/fond.png" alt=""
+             id="hero-bg"
+             class="w-full h-full object-cover"
+             onerror="this.style.display='none'">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#2d0060] via-[#4a0080] to-[#1a0030]" style="z-index:-1;"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0d0020]/50 via-transparent to-[#0d0020]"></div>
+    </div>
+
+    <!-- Glows ambiants -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500/15 blur-[160px] animate-float-slow"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-purple-700/20 blur-[140px] animate-float-slow" style="animation-delay:-5s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full bg-purple-600/10 blur-[200px]"></div>
+    </div>
+
+    <!-- Espace navbar -->
+    <div class="pt-24"></div>
+
+    <!-- Contenu principal -->
+    <div class="relative z-10 flex-1 flex items-center justify-center px-4 py-6">
+        <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
+
+            <!-- ERN Logo + Thème — grand, flottant -->
+            <div class="flex-shrink-0 flex flex-col items-center justify-center reveal-left" style="gap: 6px;">
+                <img src="assets/hero/ern-logo.png"
+                     alt="ERN 2026 – L'Esprit Pour le Réveil des Nations"
+                     class="w-[280px] sm:w-[390px] lg:w-[490px] xl:w-[550px] animate-float drop-shadow-2xl"
+                     style="filter: drop-shadow(0 0 60px rgba(124,58,237,0.55)) drop-shadow(0 0 30px rgba(249,115,22,0.3));"
+                     onerror="this.src='assets/hero/collage.png'">
+                <!-- Thème directement sous le logo, même animation décalée -->
+                <img src="assets/hero/theme.png"
+                     alt="L'Esprit Pour le Réveil des Nations"
+                     class="w-[180px] sm:w-[250px] lg:w-[320px] animate-float drop-shadow-xl"
+                     style="animation-delay: 1.5s; filter: drop-shadow(0 0 18px rgba(251,191,36,0.45)); margin-top: -12px;"
+                     onerror="this.style.display='none'">
+            </div>
+
+            <!-- Texte + Boutons -->
+            <div class="flex flex-col items-center lg:items-start text-center lg:text-left gap-6 reveal-right max-w-lg">
+
+                <!-- Badge édition -->
+                <div class="inline-flex items-center gap-2 glass-badge px-4 py-2 rounded-full">
+                    <span class="pulse-dot"></span>
+                    <span class="text-xs text-orange-300 tracking-[0.25em] uppercase font-semibold">2ème Édition · ERN 2026</span>
+                    <span class="pulse-dot"></span>
+                </div>
+
+                <!-- Verset biblique Actes 2:17 -->
+                <div class="glass-card rounded-2xl px-6 py-5 border border-yellow-400/20" style="box-shadow: 0 0 30px rgba(251,191,36,0.08);">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-1 h-full min-h-[40px] rounded-full bg-gradient-to-b from-yellow-400 to-orange-500 flex-shrink-0"></div>
+                        <p class="text-base sm:text-lg text-white/90 leading-relaxed italic font-light">
+                            "Il arrivera dans les derniers jours, dit Dieu, que je répandrai de mon Esprit sur toute chair&nbsp;; vos fils et vos filles prophétiseront, vos jeunes gens auront des visions, et vos vieillards auront des songes."
+                        </p>
+                    </div>
+                    <p class="text-right font-bold text-yellow-400 tracking-wide text-sm">— Actes 2 : 17</p>
+                </div>
+
+                <!-- Infos rapides -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                    <div class="info-pill"><i class="fas fa-calendar-alt text-orange-400"></i><span>20 – 25 <strong>Mai 2026</strong></span></div>
+                    <div class="info-pill"><i class="fas fa-clock text-orange-400"></i><span><strong>19H00</strong></span></div>
+                    <div class="info-pill"><i class="fas fa-map-marker-alt text-orange-400"></i><span><strong>Cité de l'Abondance</strong></span></div>
+                </div>
+
+                <!-- CTA Boutons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full">
+                    <a href="#reservation" class="btn-primary btn-large group w-full sm:w-auto">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Confirmer ma présence</span>
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#location" class="btn-secondary btn-large group w-full sm:w-auto">
+                        <i class="fas fa-map-marker-alt text-orange-400"></i>
+                        <span>Localisation</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Espace bas -->
+    <div class="pb-32"></div>
+
+    <!-- Countdown Bar -->
+    <div class="absolute bottom-0 left-0 right-0 z-10 pb-4 px-4">
+        <div class="glass-card rounded-2xl p-3 sm:p-4 max-w-lg mx-auto text-center">
+            <p class="text-[0.6rem] sm:text-xs text-purple-300/70 uppercase tracking-[0.3em] mb-2 sm:mb-3">Compte à rebours avant l'ouverture</p>
+            <div id="countdown" class="grid grid-cols-4 gap-2">
+                <div class="countdown-block"><div class="countdown-num" id="cd-days">00</div><div class="countdown-label">Jours</div></div>
+                <div class="countdown-block"><div class="countdown-num" id="cd-hours">00</div><div class="countdown-label">Heures</div></div>
+                <div class="countdown-block"><div class="countdown-num" id="cd-minutes">00</div><div class="countdown-label">Minutes</div></div>
+                <div class="countdown-block"><div class="countdown-num" id="cd-seconds">00</div><div class="countdown-label">Secondes</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     ABOUT SECTION
+═══════════════════════════════════════ -->
+<section id="about" class="relative py-24 overflow-hidden">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+
+        <div class="text-center mb-16">
+            <span class="section-badge reveal-up">À Propos</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Qu'est-ce qu'<span class="text-gradient-orange">EFFUSION</span> ?
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+        </div>
+
+        <!-- Main Quote Card -->
+        <div class="glass-card rounded-3xl p-8 sm:p-12 max-w-4xl mx-auto mb-14 reveal-up text-center" style="animation-delay:0.3s;">
+            <div class="text-5xl mb-5">🔥</div>
+            <blockquote class="text-lg sm:text-2xl text-white/90 leading-relaxed font-light italic mb-6">
+                "Effusion est un rendez-vous <em class="text-orange-400 not-italic font-semibold">prophétique</em> et
+                <em class="text-purple-400 not-italic font-semibold">spirituel</em> organisé dans le cadre de ERN 2026,
+                un temps de réveil, d'adoration, de prière intense et de visitation divine pour les nations."
+            </blockquote>
+            <div class="flex items-center justify-center gap-3 text-purple-300/70">
+                <div class="h-px w-10 bg-purple-400/40"></div>
+                <span class="text-xs tracking-[0.3em] uppercase">ERN · L'Esprit Pour le Réveil des Nations</span>
+                <div class="h-px w-10 bg-purple-400/40"></div>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="feature-card glass-card rounded-2xl p-5 sm:p-6 text-center reveal-up hover-lift group" style="animation-delay:0.1s;">
+                <div class="feature-icon bg-purple-800/50 group-hover:bg-purple-700/70" style="--glow:#7c3aed;">
+                    <i class="fas fa-dove text-xl text-purple-300"></i>
+                </div>
+                <h3 class="font-bold text-base sm:text-lg mb-2 mt-4">Réveil</h3>
+                <p class="text-xs sm:text-sm text-white/55 leading-relaxed">Un temps de réveil spirituel et de transformation pour les nations</p>
+            </div>
+            <div class="feature-card glass-card rounded-2xl p-5 sm:p-6 text-center reveal-up hover-lift group" style="animation-delay:0.2s;">
+                <div class="feature-icon bg-orange-800/50 group-hover:bg-orange-700/70" style="--glow:#f97316;">
+                    <i class="fas fa-hands-praying text-xl text-orange-300"></i>
+                </div>
+                <h3 class="font-bold text-base sm:text-lg mb-2 mt-4">Prière</h3>
+                <p class="text-xs sm:text-sm text-white/55 leading-relaxed">Des temps de prière intense et d'intercession collective</p>
+            </div>
+            <div class="feature-card glass-card rounded-2xl p-5 sm:p-6 text-center reveal-up hover-lift group" style="animation-delay:0.3s;">
+                <div class="feature-icon bg-yellow-800/50 group-hover:bg-yellow-700/70" style="--glow:#fbbf24;">
+                    <i class="fas fa-music text-xl text-yellow-300"></i>
+                </div>
+                <h3 class="font-bold text-base sm:text-lg mb-2 mt-4">Adoration</h3>
+                <p class="text-xs sm:text-sm text-white/55 leading-relaxed">Un culte d'adoration profonde en présence de l'Éternel</p>
+            </div>
+            <div class="feature-card glass-card rounded-2xl p-5 sm:p-6 text-center reveal-up hover-lift group" style="animation-delay:0.4s;">
+                <div class="feature-icon bg-blue-800/50 group-hover:bg-blue-700/70" style="--glow:#3b82f6;">
+                    <i class="fas fa-globe text-xl text-blue-300"></i>
+                </div>
+                <h3 class="font-bold text-base sm:text-lg mb-2 mt-4">Nations</h3>
+                <p class="text-xs sm:text-sm text-white/55 leading-relaxed">Une rencontre internationale pour l'éveil des nations du monde</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SPEAKERS SECTION
+═══════════════════════════════════════ -->
+<section id="speakers" class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/20 to-transparent pointer-events-none"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="container mx-auto px-4 max-w-5xl relative z-10">
+
+        <div class="text-center mb-16">
+            <span class="section-badge reveal-up">Orateurs</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Serviteurs de <span class="text-gradient-orange">Dieu</span>
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+            <p class="text-white/50 mt-5 max-w-lg mx-auto text-sm reveal-up" style="animation-delay:0.3s;">Porteurs d'une onction prophétique puissante pour les nations</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+
+            <!-- Speaker: Raymond Palenfo -->
+            <div class="speaker-card glass-card rounded-3xl overflow-hidden reveal-left group hover-lift">
+                <div class="relative h-72 sm:h-80 speaker-photo-area photo-raymond" style="background-image: url('assets/speakers/raymond-hd.png');">
+                    <img src="assets/speakers/Photo papa.png" alt="Prophète Raymond Palenfo"
+                         class="transition-transform duration-700 group-hover:scale-105"
+                         onerror="this.style.display='none'; document.getElementById('ph-raymond').style.display='flex'">
+                    <div id="ph-raymond" class="absolute inset-0 hidden items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-28 h-28 rounded-full bg-purple-700/60 border-4 border-purple-400/40 flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-user text-4xl text-purple-300"></i>
+                            </div>
+                            <p class="text-xs text-purple-300 tracking-wider">Photo à venir</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0020] via-[#0d0020]/20 to-transparent"></div>
+                    <div class="absolute top-4 right-4">
+                        <span class="glass-badge text-xs font-bold text-purple-300 px-3 py-1 rounded-full uppercase tracking-wider">Prophète</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-1 h-12 rounded-full bg-gradient-to-b from-orange-400 to-purple-500 flex-shrink-0 mt-1"></div>
+                        <div>
+                            <h3 class="text-xl font-black">Raymond Palenfo</h3>
+                            <p class="text-sm text-orange-400 font-semibold tracking-wide">Prophète</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-white/55 leading-relaxed">Serviteur de Dieu porteur d'une onction prophétique, guidant les nations vers le réveil spirituel et la transformation.</p>
+                    <div class="flex gap-2 mt-4">
+                        <a href="#" class="social-icon-sm hover:bg-blue-600/50"><i class="fab fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="social-icon-sm hover:bg-pink-600/50"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="social-icon-sm hover:bg-red-600/50"><i class="fab fa-youtube text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speaker: Marie Noëlle Palenfo -->
+            <div class="speaker-card glass-card rounded-3xl overflow-hidden reveal-right group hover-lift">
+                <div class="relative h-72 sm:h-80 speaker-photo-area photo-marie" style="background-image: url('assets/speakers/marie-hd.png');">
+                    <img src="assets/speakers/Photo maman.png" alt="Prophétesse Marie Noëlle Palenfo"
+                         class="transition-transform duration-700 group-hover:scale-105"
+                         onerror="this.style.display='none'; document.getElementById('ph-marie').style.display='flex'">
+                    <div id="ph-marie" class="absolute inset-0 hidden items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-28 h-28 rounded-full bg-orange-700/60 border-4 border-orange-400/40 flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-user text-4xl text-orange-300"></i>
+                            </div>
+                            <p class="text-xs text-orange-300 tracking-wider">Photo à venir</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0020] via-[#0d0020]/20 to-transparent"></div>
+                    <div class="absolute top-4 right-4">
+                        <span class="glass-badge text-xs font-bold text-yellow-300 px-3 py-1 rounded-full uppercase tracking-wider">Prophétesse</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-1 h-12 rounded-full bg-gradient-to-b from-yellow-400 to-orange-500 flex-shrink-0 mt-1"></div>
+                        <div>
+                            <h3 class="text-xl font-black">Marie Noëlle Palenfo</h3>
+                            <p class="text-sm text-yellow-400 font-semibold tracking-wide">Prophétesse</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-white/55 leading-relaxed">Femme de Dieu portant une vision prophétique pour les nations, un cœur brûlant pour le réveil et la gloire de Dieu.</p>
+                    <div class="flex gap-2 mt-4">
+                        <a href="#" class="social-icon-sm hover:bg-blue-600/50"><i class="fab fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="social-icon-sm hover:bg-pink-600/50"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="social-icon-sm hover:bg-black/50"><i class="fab fa-tiktok text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PROGRAMME SECTION
+═══════════════════════════════════════ -->
+<section id="programme" class="relative py-24 overflow-hidden">
+    <div class="blob blob-4"></div>
+
+    <div class="container mx-auto px-4 max-w-5xl relative z-10">
+
+        <div class="text-center mb-16">
+            <span class="section-badge reveal-up">Programme</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Programme <span class="text-gradient-orange">Officiel</span>
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+            <p class="text-white/50 mt-4 text-sm reveal-up" style="animation-delay:0.3s;">Du 20 au 25 Mai 2026 · Cité de l'Abondance</p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="relative">
+            <!-- Center line (desktop) -->
+            <div class="hidden md:block absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-px timeline-line"></div>
+
+            <!-- Day 1: Ouverture -->
+            <div class="timeline-item mb-8 flex flex-col md:flex-row items-center gap-4 md:gap-0 reveal-up">
+                <div class="md:w-[calc(50%-2rem)] md:pr-8 md:text-right order-2 md:order-1 w-full">
+                    <div class="prog-card prog-card-purple p-5 sm:p-6 rounded-2xl glass-card">
+                        <div class="prog-day-badge prog-badge-purple mb-3">MERCREDI 20 MAI</div>
+                        <h3 class="text-xl sm:text-2xl font-black mb-2">OUVERTURE</h3>
+                        <div class="prog-time text-gradient-purple text-3xl font-black">19<span class="text-lg font-bold text-white/60">H</span></div>
+                        <p class="text-xs sm:text-sm text-white/55 mt-2 leading-relaxed">Cérémonie d'ouverture solennelle de la 2ème édition de ERN EFFUSION</p>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-purple-500 border-purple-300 order-1 md:order-2 z-10 flex-shrink-0" style="box-shadow:0 0 20px #7c3aed;">
+                    <i class="fas fa-door-open text-white text-xs"></i>
+                </div>
+                <div class="md:w-[calc(50%-2rem)] md:pl-8 order-3 hidden md:block"></div>
+            </div>
+
+            <!-- Day 2: Temps Prophétique -->
+            <div class="timeline-item mb-8 flex flex-col md:flex-row items-center gap-4 md:gap-0 reveal-up" style="animation-delay:0.1s;">
+                <div class="md:w-[calc(50%-2rem)] md:pr-8 order-3 md:order-1 hidden md:block"></div>
+                <div class="timeline-dot bg-yellow-500 border-yellow-300 order-1 z-10 flex-shrink-0" style="box-shadow:0 0 20px #f59e0b;">
+                    <i class="fas fa-fire text-white text-xs"></i>
+                </div>
+                <div class="md:w-[calc(50%-2rem)] md:pl-8 order-2 w-full">
+                    <div class="prog-card prog-card-gold p-5 sm:p-6 rounded-2xl glass-card">
+                        <div class="prog-day-badge prog-badge-gold mb-3">JEUDI 21 MAI</div>
+                        <h3 class="text-xl sm:text-2xl font-black mb-2">TEMPS PROPHÉTIQUE</h3>
+                        <div class="prog-time text-gradient-gold text-3xl font-black">19<span class="text-lg font-bold text-white/60">H</span></div>
+                        <p class="text-xs sm:text-sm text-white/55 mt-2 leading-relaxed">Soirée prophétique avec des paroles de Dieu pour les nations et les individus</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 3: Nuit du Saint Esprit -->
+            <div class="timeline-item mb-8 flex flex-col md:flex-row items-center gap-4 md:gap-0 reveal-up" style="animation-delay:0.2s;">
+                <div class="md:w-[calc(50%-2rem)] md:pr-8 md:text-right order-2 md:order-1 w-full">
+                    <div class="prog-card prog-card-blue p-5 sm:p-6 rounded-2xl glass-card prog-featured">
+                        <div class="flex items-center justify-end gap-2 mb-3">
+                            <span class="night-badge">✨ NUIT SPÉCIALE</span>
+                            <div class="prog-day-badge prog-badge-blue">VENDREDI 22 MAI</div>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black mb-2">LA NUIT DU SAINT ESPRIT</h3>
+                        <div class="prog-time text-blue-400 text-2xl sm:text-3xl font-black">19H – 00H</div>
+                        <p class="text-xs sm:text-sm text-white/55 mt-2 leading-relaxed">5 heures de présence divine, d'adoration et de feu du Saint-Esprit pour les nations</p>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-blue-500 border-blue-300 order-1 md:order-2 z-10 flex-shrink-0 animate-pulse" style="box-shadow:0 0 25px #3b82f6;">
+                    <i class="fas fa-moon text-white text-xs"></i>
+                </div>
+                <div class="md:w-[calc(50%-2rem)] md:pl-8 order-3 hidden md:block"></div>
+            </div>
+
+            <!-- Day 4: Célébration Pentecôte -->
+            <div class="timeline-item mb-8 flex flex-col md:flex-row items-center gap-4 md:gap-0 reveal-up" style="animation-delay:0.3s;">
+                <div class="md:w-[calc(50%-2rem)] md:pr-8 order-3 md:order-1 hidden md:block"></div>
+                <div class="timeline-dot bg-orange-500 border-orange-300 order-1 z-10 flex-shrink-0" style="box-shadow:0 0 20px #f97316;">
+                    <i class="fas fa-star text-white text-xs"></i>
+                </div>
+                <div class="md:w-[calc(50%-2rem)] md:pl-8 order-2 w-full">
+                    <div class="prog-card prog-card-orange p-5 sm:p-6 rounded-2xl glass-card">
+                        <div class="prog-day-badge prog-badge-orange mb-3">DIMANCHE 24 MAI</div>
+                        <h3 class="text-lg sm:text-xl font-black mb-1">CÉLÉBRATION DE LA PENTECÔTE</h3>
+                        <p class="text-sm text-orange-300 font-bold mb-2 tracking-wider">AVEC LES 12 TRIBUS</p>
+                        <div class="prog-time text-gradient-orange text-3xl font-black">08<span class="text-lg font-bold text-white/60">H</span></div>
+                        <p class="text-xs sm:text-sm text-white/55 mt-2 leading-relaxed">Grande célébration de la Pentecôte avec les 12 tribus de l'église en gloire</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 5: EREN Beach -->
+            <div class="timeline-item flex flex-col md:flex-row items-center gap-4 md:gap-0 reveal-up" style="animation-delay:0.4s;">
+                <div class="md:w-[calc(50%-2rem)] md:pr-8 md:text-right order-2 md:order-1 w-full">
+                    <div class="prog-card prog-card-cyan p-5 sm:p-6 rounded-2xl glass-card">
+                        <div class="flex items-center justify-end gap-2 mb-3">
+                            <span class="beach-day-badge">🏖️ SORTIE DÉTENTE</span>
+                            <div class="prog-day-badge prog-badge-cyan">LUNDI 25 MAI</div>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black mb-1">SORTIE À ASSINIE</h3>
+                        <p class="text-sm text-cyan-400 font-bold mb-2">EREN BEACH 2026</p>
+                        <p class="text-xs sm:text-sm text-white/55 leading-relaxed">Journée de détente, louange et agapé en bord de mer à Assinie</p>
+                        <a href="#beach" class="inline-flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 mt-3 transition-colors">
+                            En savoir plus <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-cyan-500 border-cyan-300 order-1 md:order-2 z-10 flex-shrink-0" style="box-shadow:0 0 20px #06b6d4;">
+                    <i class="fas fa-umbrella-beach text-white text-xs"></i>
+                </div>
+                <div class="md:w-[calc(50%-2rem)] md:pl-8 order-3 hidden md:block"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     DRESS CODE / SLIDERS SECTION
+═══════════════════════════════════════ -->
+<section id="dresscode" class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/20 to-transparent pointer-events-none"></div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+
+        <div class="text-center mb-16">
+            <span class="section-badge reveal-up">Dress Code</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Tenues & <span class="text-gradient-orange">Dress Codes</span>
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+            <p class="text-white/50 mt-4 text-sm reveal-up" style="animation-delay:0.3s;">Les tenues officielles pour chaque moment de l'événement</p>
+        </div>
+
+        <!-- SLIDER 1: Tenue des Tribus -->
+        <div class="mb-16 reveal-up">
+            <div class="slider-header mb-6">
+                <div class="slider-icon bg-purple-700/50"><i class="fas fa-users text-purple-300"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold">Tenue des Tribus</h3>
+                    <p class="text-sm text-white/45">Tenues officielles des 12 tribus</p>
+                </div>
+            </div>
+            <div class="slider-wrapper" id="slider-tribus-wrapper">
+                <div class="slider-track" id="track-tribus">
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-1.jpg"  alt="Ruben – Baoulé"     class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-2.jpg"  alt="Nephthali – Béthé" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-3.jpg"  alt="Lévi – Agni"       class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-4.jpg"  alt="Juda – Adjoukrou"  class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-5.jpg"  alt="Joseph – Sé Noufo" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-6.jpg"  alt="Issacar – Gouro"   class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-7.jpg"  alt="Gad – Ébrié"       class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-8.jpg"  alt="Dan – Guéré"       class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-9.jpg"  alt="Aser – Yacouba"    class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-10.jpg" alt="Zabulon – Lobi"    class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-11.jpg" alt="Siméon – Attié"    class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/tribus/tribu-12.jpg" alt="Benjamin – Dida"   class="slide-img"></div>
+                </div>
+                <button class="slider-btn slider-btn-left" onclick="sliderPrev('tribus')"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn slider-btn-right" onclick="sliderNext('tribus')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots" id="dots-tribus"></div>
+        </div>
+
+        <!-- SLIDER 2: Tenue d'Ouverture -->
+        <div class="mb-16 reveal-up" style="animation-delay:0.1s;">
+            <div class="slider-header mb-6">
+                <div class="slider-icon bg-orange-700/50"><i class="fas fa-crown text-orange-300"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold">Tenue de l'Ouverture</h3>
+                    <p class="text-sm text-white/45">Tenues officielles pour la cérémonie d'ouverture</p>
+                </div>
+            </div>
+            <div class="slider-wrapper" id="slider-opening-wrapper">
+                <div class="slider-track" id="track-opening">
+                    <div class="slide"><img src="assets/sliders/opening/opening-1.jpg" alt="Tenue d'ouverture 1" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/opening/opening-2.jpg" alt="Tenue d'ouverture 2" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/opening/opening-3.jpg" alt="Tenue d'ouverture 3" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/opening/opening-4.jpg" alt="Tenue d'ouverture 4" class="slide-img"></div>
+                    <div class="slide"><img src="assets/sliders/opening/opening-5.jpg" alt="Tenue d'ouverture 5" class="slide-img"></div>
+                </div>
+                <button class="slider-btn slider-btn-left" onclick="sliderPrev('opening')"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn slider-btn-right" onclick="sliderNext('opening')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots" id="dots-opening"></div>
+        </div>
+
+        <!-- SLIDER 3: Pack EREN Beach -->
+        <div class="reveal-up" style="animation-delay:0.2s;">
+            <div class="slider-header mb-6">
+                <div class="slider-icon bg-cyan-700/50"><i class="fas fa-umbrella-beach text-cyan-300"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold">Pack EREN Beach</h3>
+                    <p class="text-sm text-white/45">Vêtements, accessoires et packs plage</p>
+                </div>
+            </div>
+            <div class="slider-wrapper" id="slider-beach-wrapper">
+                <div class="slider-track" id="track-beach">
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-tshirt text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 1</p><small>/assets/sliders/beach/beach-1.jpg</small></div></div>
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-hat-cowboy text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 2</p><small>/assets/sliders/beach/beach-2.jpg</small></div></div>
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-glasses text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 3</p><small>/assets/sliders/beach/beach-3.jpg</small></div></div>
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-bag-shopping text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 4</p><small>/assets/sliders/beach/beach-4.jpg</small></div></div>
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-sun text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 5</p><small>/assets/sliders/beach/beach-5.jpg</small></div></div>
+                    <div class="slide"><div class="slide-placeholder cyan-placeholder"><i class="fas fa-water text-4xl mb-3 text-cyan-300 opacity-60"></i><p>Pack Beach 6</p><small>/assets/sliders/beach/beach-6.jpg</small></div></div>
+                </div>
+                <button class="slider-btn slider-btn-left" onclick="sliderPrev('beach-s')"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn slider-btn-right" onclick="sliderNext('beach-s')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots" id="dots-beach-s"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     EREN BEACH SECTION
+═══════════════════════════════════════ -->
+<section id="beach" class="relative py-24 overflow-hidden">
+
+    <!-- Tropical BG -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/beach/assinie.jpg" alt="Assinie"
+             class="w-full h-full object-cover opacity-15"
+             onerror="this.style.display='none'">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0d0020] via-[#001a3a]/80 to-[#0d0020]"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-transparent to-blue-900/20"></div>
+    </div>
+
+    <!-- Glow blobs -->
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-cyan-600/10 blur-[150px] pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none"></div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+
+        <div class="text-center mb-12">
+            <span class="beach-badge-section reveal-up">SORTIE DÉTENTE · LUNDI 25 MAI 2026</span>
+            <h2 class="reveal-up mt-5 mb-2" style="animation-delay:0.1s;">
+                <span class="beach-title-eren">EREN</span>
+                <span class="beach-title-beach"> BEACH</span>
+            </h2>
+            <div class="beach-year-text reveal-up" style="animation-delay:0.2s;">2026</div>
+            <div class="beach-divider mx-auto mt-4 mb-6 reveal-up" style="animation-delay:0.3s;"></div>
+        </div>
+
+        <!-- Beach Info Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-10">
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.0s;">
+                <div class="beach-icon-wrap" style="--clr:#06b6d4;"><i class="fas fa-calendar-alt text-cyan-300 text-xl"></i></div>
+                <p class="text-xs text-cyan-300/70 uppercase tracking-widest mt-3 mb-1">Date</p>
+                <p class="font-bold text-white">Lundi <span class="text-cyan-400">25 Mai</span> 2026</p>
+            </div>
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.1s;">
+                <div class="beach-icon-wrap" style="--clr:#3b82f6;"><i class="fas fa-map-marker-alt text-blue-300 text-xl"></i></div>
+                <p class="text-xs text-blue-300/70 uppercase tracking-widest mt-3 mb-1">Lieu</p>
+                <p class="font-bold text-white text-blue-400">Assinie</p>
+                <p class="text-xs text-white/45">Côte d'Ivoire</p>
+            </div>
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.2s;">
+                <div class="beach-icon-wrap" style="--clr:#fbbf24;"><i class="fas fa-coins text-yellow-300 text-xl"></i></div>
+                <p class="text-xs text-yellow-300/70 uppercase tracking-widest mt-3 mb-1">Participation</p>
+                <p class="font-black text-2xl text-yellow-400">10 000</p>
+                <p class="text-xs text-white/45">FCFA</p>
+            </div>
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.3s;">
+                <div class="beach-icon-wrap" style="--clr:#f97316;"><i class="fas fa-shirt text-orange-300 text-xl"></i></div>
+                <p class="text-xs text-orange-300/70 uppercase tracking-widest mt-3 mb-1">Dress Code</p>
+                <p class="font-bold text-white">Tenue <span class="text-orange-400">Hawaï</span></p>
+            </div>
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.4s;">
+                <div class="beach-icon-wrap" style="--clr:#a855f7;"><i class="fas fa-star text-purple-300 text-xl"></i></div>
+                <p class="text-xs text-purple-300/70 uppercase tracking-widest mt-3 mb-1">Activités</p>
+                <div class="flex flex-wrap justify-center gap-1.5 mt-1">
+                    <span class="activity-tag">Louange</span>
+                    <span class="activity-tag">Adoration</span>
+                    <span class="activity-tag">Jeux</span>
+                    <span class="activity-tag">Agapé</span>
+                </div>
+            </div>
+
+            <div class="beach-info-card glass-card rounded-2xl p-5 text-center reveal-up hover-lift" style="animation-delay:0.5s;">
+                <div class="beach-icon-wrap" style="--clr:#22c55e;"><i class="fas fa-phone text-green-300 text-xl"></i></div>
+                <p class="text-xs text-green-300/70 uppercase tracking-widest mt-3 mb-1">Contact</p>
+                <a href="tel:0711325086" class="font-bold text-white hover:text-green-400 transition-colors text-lg">07 11 32 50 86</a>
+            </div>
+        </div>
+
+        <!-- Beach CTA -->
+        <div class="text-center reveal-up">
+            <a href="https://forms.gle/EHBafeKzfF6WJegd7" class="btn-beach group inline-flex items-center gap-3 px-10 py-5 rounded-full text-lg font-black hover:scale-105 transition-all duration-300">
+                <i class="fas fa-umbrella-beach text-xl"></i>
+                <span>Réserver ma place</span>
+                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <p class="text-white/35 text-sm mt-4">Places limitées · 10 000 FCFA · Tenue Hawaï obligatoire</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     INFOS PRATIQUES
+═══════════════════════════════════════ -->
+<section id="infos" class="relative py-24 overflow-hidden">
+    <div class="blob blob-5"></div>
+
+    <div class="container mx-auto px-4 max-w-5xl relative z-10">
+
+        <div class="text-center mb-16">
+            <span class="section-badge reveal-up">Pratique</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Informations <span class="text-gradient-orange">Pratiques</span>
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <div class="info-card glass-card rounded-2xl p-6 reveal-up hover-lift" style="animation-delay:0.0s;">
+                <div class="info-icon" style="--clr:#7c3aed;"><i class="fas fa-calendar text-purple-300"></i></div>
+                <h3 class="font-bold text-lg mt-4 mb-1">Dates</h3>
+                <p class="text-2xl font-black text-gradient-orange leading-tight">20 – 25</p>
+                <p class="text-base text-white/80">Mai 2026</p>
+                <p class="text-xs text-white/45 mt-1">6 jours de réveil spirituel</p>
+            </div>
+
+            <div class="info-card glass-card rounded-2xl p-6 reveal-up hover-lift" style="animation-delay:0.1s;">
+                <div class="info-icon" style="--clr:#f97316;"><i class="fas fa-clock text-orange-300"></i></div>
+                <h3 class="font-bold text-lg mt-4 mb-1">Heure</h3>
+                <p class="text-2xl font-black text-gradient-orange">19H00</p>
+                <p class="text-xs text-white/45 mt-1">Heure de début des rencontres</p>
+                <p class="text-xs text-white/45">Nuit du Saint Esprit : 19H – 00H</p>
+            </div>
+
+            <div class="info-card glass-card rounded-2xl p-6 reveal-up hover-lift" style="animation-delay:0.2s;">
+                <div class="info-icon" style="--clr:#fbbf24;"><i class="fas fa-church text-yellow-300"></i></div>
+                <h3 class="font-bold text-lg mt-4 mb-1">Lieu</h3>
+                <p class="text-xl font-black text-yellow-400">Cité de l'Abondance</p>
+                <p class="text-xs text-white/45 mt-1">Temple principal de l'ADN</p>
+            </div>
+
+            <div class="info-card glass-card rounded-2xl p-6 sm:col-span-2 reveal-up hover-lift" style="animation-delay:0.3s;">
+                <div class="info-icon" style="--clr:#3b82f6;"><i class="fas fa-map-pin text-blue-300"></i></div>
+                <h3 class="font-bold text-lg mt-4 mb-2">Adresse</h3>
+                <p class="text-white/80 leading-relaxed text-sm">Route de Bingerville Nouveau Goudron,</p>
+                <p class="text-white/80 leading-relaxed text-sm">Pharmacie Ephrata,</p>
+                <p class="text-orange-400 font-semibold text-sm leading-relaxed mt-1">Prolongement à gauche, 2ème carrefour à droite.</p>
+            </div>
+
+            <div class="info-card glass-card rounded-2xl p-6 reveal-up hover-lift" style="animation-delay:0.4s;">
+                <div class="info-icon" style="--clr:#22c55e;"><i class="fas fa-phone text-green-300"></i></div>
+                <h3 class="font-bold text-lg mt-4 mb-2">Contact</h3>
+                <a href="tel:0711325086" class="text-xl font-black text-green-400 hover:text-green-300 transition-colors block">07 11 32 50 86</a>
+                <a href="http://www.eglise-adn.org" class="text-xs text-purple-300 hover:text-purple-200 transition-colors mt-1 block" target="_blank">www.eglise-adn.org</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     LOCALISATION
+═══════════════════════════════════════ -->
+<section id="location" class="relative py-24 overflow-hidden">
+
+    <div class="container mx-auto px-4 max-w-4xl relative z-10">
+
+        <div class="text-center mb-12">
+            <span class="section-badge reveal-up">Localisation</span>
+            <h2 class="section-title reveal-up" style="animation-delay:0.1s;">
+                Nous <span class="text-gradient-orange">Trouver</span>
+            </h2>
+            <div class="section-line reveal-up" style="animation-delay:0.2s;"></div>
+        </div>
+
+        <div class="glass-card rounded-3xl overflow-hidden reveal-up" style="animation-delay:0.3s;">
+            <!-- Map visual placeholder -->
+            <div class="relative h-72 sm:h-96 bg-gradient-to-br from-purple-900/60 to-blue-900/40 flex items-center justify-center overflow-hidden">
+                <div class="map-grid-bg absolute inset-0 opacity-10"></div>
+                <div class="relative z-10 text-center">
+                    <div class="relative inline-block mb-5">
+                        <div class="w-20 h-20 rounded-full bg-orange-500/30 border-2 border-orange-400/50 flex items-center justify-center mx-auto animate-bounce-slow" style="box-shadow:0 0 40px rgba(249,115,22,0.4);">
+                            <i class="fas fa-map-marker-alt text-3xl text-orange-400"></i>
+                        </div>
+                        <div class="pulse-ring-el"></div>
+                    </div>
+                    <h3 class="text-2xl font-black mb-2">Cité de l'Abondance</h3>
+                    <p class="text-white/55 text-sm max-w-xs mx-auto">Route de Bingerville Nouveau Goudron · Pharmacie Ephrata</p>
+                </div>
+            </div>
+
+            <div class="p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <p class="font-semibold text-white">Cité de l'Abondance</p>
+                    <p class="text-sm text-white/50">Route de Bingerville, Nouveau Goudron — Abidjan, Côte d'Ivoire</p>
+                </div>
+                <a href="https://maps.app.goo.gl/u3bZ2zMGhzBP5KZy7" target="_blank"
+                   class="btn-primary flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm whitespace-nowrap flex-shrink-0">
+                    <i class="fas fa-directions"></i>
+                    Voir sur la carte
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     RÉSERVATION
+═══════════════════════════════════════ -->
+<section id="reservation" class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-[#0d0020] to-orange-950/30"></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] rounded-full bg-purple-600/10 blur-[200px]"></div>
+        <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-orange-600/10 blur-[150px]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-3xl text-center relative z-10">
+        <span class="section-badge reveal-up">Réservation</span>
+
+        <h2 class="reveal-up mt-6 mb-4 text-4xl sm:text-6xl font-black leading-tight" style="animation-delay:0.15s;">
+            Réservez votre place
+            <span class="block text-gradient-orange mt-1">maintenant</span>
+        </h2>
+
+        <p class="reveal-up text-lg sm:text-xl text-white/65 mb-10 leading-relaxed max-w-xl mx-auto" style="animation-delay:0.3s;">
+            Ne manquez pas ce rendez-vous prophétique exceptionnel. Confirmez votre présence pour vivre l'Effusion du Saint-Esprit en 2026.
+        </p>
+
+        <!-- Stats -->
+        <div class="reveal-up grid grid-cols-3 gap-3 mb-12 max-w-sm mx-auto" style="animation-delay:0.45s;">
+            <div class="glass-card rounded-2xl py-4">
+                <div class="text-3xl font-black text-gradient-orange">6</div>
+                <div class="text-xs text-white/45 uppercase tracking-widest mt-0.5">Jours</div>
+            </div>
+            <div class="glass-card rounded-2xl py-4">
+                <div class="text-3xl font-black text-gradient-orange">5</div>
+                <div class="text-xs text-white/45 uppercase tracking-widest mt-0.5">Sessions</div>
+            </div>
+            <div class="glass-card rounded-2xl py-4">
+                <div class="text-3xl font-black text-gradient-orange">2</div>
+                <div class="text-xs text-white/45 uppercase tracking-widest mt-0.5">Orateurs</div>
+            </div>
+        </div>
+
+        <!-- Big CTA -->
+        <div class="reveal-up" style="animation-delay:0.6s;">
+            <a href="https://forms.gle/EHBafeKzfF6WJegd7"
+               class="btn-cta group inline-flex items-center gap-4 px-10 sm:px-14 py-5 sm:py-6 rounded-full text-xl sm:text-2xl font-black">
+                <i class="fas fa-check-circle"></i>
+                <span>Confirmer ma présence</span>
+                <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform duration-300"></i>
+            </a>
+        </div>
+
+        <p class="reveal-up text-white/35 text-sm mt-6" style="animation-delay:0.75s;">
+            Entrée libre · Du 20 au 25 Mai 2026 · Cité de l'Abondance
+        </p>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="relative pt-16 pb-8 border-t border-white/10 overflow-hidden">
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-purple-900/20 blur-[150px] pointer-events-none"></div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+
+            <!-- Brand -->
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-purple-400/50 bg-white flex items-center justify-center">
+                        <img src="assets/logo/logo.png" alt="ADN" class="w-full h-full object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="hidden w-full h-full items-center justify-center bg-purple-900">
+                            <span class="text-sm font-black text-orange-400">ADN</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-black text-white text-lg leading-tight">Assemblée des Nations</p>
+                        <p class="text-xs text-orange-400 tracking-[0.3em] uppercase">ADN</p>
+                    </div>
+                </div>
+                <p class="text-sm text-white/50 leading-relaxed mb-3">
+                    "L'Esprit Pour le Réveil des Nations" — Un ministère apostolique et prophétique pour toutes les nations.
+                </p>
+                <a href="http://www.eglise-adn.org" class="text-purple-400 text-sm hover:text-purple-300 transition-colors" target="_blank">www.eglise-adn.org</a>
+            </div>
+
+            <!-- Event Info -->
+            <div>
+                <h4 class="font-bold text-white mb-5 text-sm uppercase tracking-wider">ERN 2026 – EFFUSION</h4>
+                <ul class="space-y-3 text-sm text-white/55">
+                    <li class="flex items-center gap-2.5"><i class="fas fa-calendar text-orange-400 w-4 flex-shrink-0"></i><span>20 – 25 Mai 2026</span></li>
+                    <li class="flex items-center gap-2.5"><i class="fas fa-clock text-orange-400 w-4 flex-shrink-0"></i><span>Rencontres à 19H00</span></li>
+                    <li class="flex items-center gap-2.5"><i class="fas fa-church text-orange-400 w-4 flex-shrink-0"></i><span>Cité de l'Abondance</span></li>
+                    <li class="flex items-start gap-2.5"><i class="fas fa-map-pin text-orange-400 w-4 flex-shrink-0 mt-0.5"></i><span>Route de Bingerville Nouveau Goudron, Pharmacie Ephrata</span></li>
+                    <li class="flex items-center gap-2.5"><i class="fas fa-phone text-orange-400 w-4 flex-shrink-0"></i><a href="tel:0711325086" class="hover:text-white transition-colors">07 11 32 50 86</a></li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div>
+                <h4 class="font-bold text-white mb-5 text-sm uppercase tracking-wider">Suivez-nous</h4>
+                <div class="flex gap-3 mb-6">
+                    <a href="#" class="footer-social hover:bg-blue-600/60" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social hover:bg-gradient-to-br hover:from-pink-600/60 hover:to-orange-600/60" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social hover:bg-[#010101]/80" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="footer-social hover:bg-red-600/60" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p class="text-xs text-white/35 italic leading-relaxed">
+                    "Le Saint-Esprit descend comme à la Pentecôte<br>sur toutes les nations."
+                </p>
+            </div>
+        </div>
+
+        <div class="h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent mb-6"></div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/35">
+            <p>© 2026 Assemblée des Nations (ADN). Tous droits réservés.</p>
+            <p>ERN 2026 – EFFUSION · 2ème Édition</p>
+            <a href="http://www.eglise-adn.org" class="hover:text-purple-400 transition-colors" target="_blank">eglise-adn.org</a>
+        </div>
+    </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Retour en haut"
+        class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full btn-primary flex items-center justify-center opacity-0 translate-y-6 transition-all duration-500 hover:scale-110 pointer-events-none">
+    <i class="fas fa-chevron-up text-sm"></i>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>
